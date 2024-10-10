@@ -101,9 +101,54 @@ const handleMovement = (movement, cube, min, max) => {
 	);
 };
 
+const pGeometry = new THREE.PlaneGeometry(5 * 3, 5 * 2);
+const pMaterial = new THREE.MeshBasicMaterial({ color: 0xaa00bb });
+const plane = new THREE.Mesh(pGeometry, pMaterial);
+plane.position.z = 4.8;
+scene.add(plane);
+
+window.addEventListener("blur", function () {
+	plane.visible = true;
+});
+
+window.addEventListener("focus", function () {
+	plane.visible = false;
+});
+
+// const canvas = document.createElement("canvas");
+// const context = canvas.getContext("2d");
+
+// context.fillStyle = "purple";
+// context.font = "30px sans-serif";
+// context.fillText("Game is unfocused!", 0, 60);
+
+// const texture = new THREE.Texture(canvas);
+// texture.needsUpdate = true;
+
+// const material = new THREE.MeshBasicMaterial({
+// 	map: texture,
+// 	side: THREE.DoubleSide,
+// });
+// material.transparent = true;
+// const text = new THREE.Mesh(new THREE.PlaneGeometry(5 * 3, 5 * 2), material);
+
+// scene.add(text);
+
+const ballMat = new THREE.MeshBasicMaterial({
+	color: 0x00aaff,
+});
+const ballGeo = new THREE.SphereGeometry(0.5, 32, 32);
+const ball = new THREE.Mesh(ballGeo, ballMat);
+scene.add(ball);
+
+let n = 0.03;
+
 const animate = () => {
 	handleMovement(leftMovement, leftCube);
 	handleMovement(rightMovement, rightCube);
+	ball.translateX(n);
+	if (ball.position.x >= 5 || ball.position.x <= -5) n = -n;
+
 	renderer.render(scene, camera);
 };
 
