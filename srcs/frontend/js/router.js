@@ -50,3 +50,8 @@ const urlLocationHandler = async () => {
 
 	document.getElementById("content").innerHTML = html;
 };
+
+window.onpopstate = urlLocationHandler;
+window.route = route;
+
+urlLocationHandler();

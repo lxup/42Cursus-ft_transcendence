@@ -3,8 +3,8 @@ services:
     networks:
       - ftt
     build:
-      context: srcs/nginx
-      dockerfile: "Dockerfile"
+      context: srcs/
+      dockerfile: "nginx/Dockerfile"
     ports:
       - "8080:80"
     restart: unless-stopped
