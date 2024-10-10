@@ -1,4 +1,14 @@
 services:
+  nginx:
+    networks:
+      - ftt
+    build:
+      context: srcs/nginx
+      dockerfile: "Dockerfile"
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+
   django:
     networks:
       - ftt
@@ -7,7 +17,7 @@ services:
       dockerfile: "Dockerfile"
     ports:
       - "8000:8000"
-    restart: unless-stopped
+    # restart: unless-stopped
 
 networks:
   ftt:
