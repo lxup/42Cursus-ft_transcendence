@@ -8,6 +8,16 @@ services:
     ports:
       - "8000:8000"
     restart: unless-stopped
+  
+  vault:
+    networks:
+      - ftt
+    build:
+      context: srcs/vault
+      dockerfile: "Dockerfile"
+    ports:
+      - "8200:8200"
+    restart: on-failure
 
 networks:
   ftt:
