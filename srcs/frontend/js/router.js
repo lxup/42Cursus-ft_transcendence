@@ -49,9 +49,33 @@ const urlLocationHandler = async () => {
 	const html = await fetch(resolvedRoute.page).then((res) => res.text());
 
 	document.getElementById("content").innerHTML = html;
+
+	if (location == "/signup") {
+		handleFormSubmission();
+	}
 };
 
 window.onpopstate = urlLocationHandler;
 window.route = route;
 
 urlLocationHandler();
+
+const handleFormSubmission = () => {
+	const signUpForm = document.getElementById("signup-form");
+
+	signUpForm.addEventListener("submit", async (event) => {
+		event.preventDefault();
+
+		const username = document.getElementById("username").value;
+		const email = document.getElementById("email").value;
+		const password = document.getElementById("password").value;
+
+		const data = {
+			username,
+			email,
+			password,
+		};
+
+		console.log(data);
+	});
+};
