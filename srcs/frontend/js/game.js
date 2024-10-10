@@ -87,12 +87,12 @@ const getBoundaryMax = (cube) => {
 	return 5 - cube.scale.y * 2;
 };
 
-const handleMovement = (movement, cube, min, max) => {
+const handleMovement = (movement, cube, speed) => {
 	if (movement.up) {
-		cube.translateY(0.05);
+		cube.translateY(speed);
 	}
 	if (movement.down) {
-		cube.translateY(-0.05);
+		cube.translateY(-speed);
 	}
 	cube.position.y = THREE.MathUtils.clamp(
 		cube.position.y,
@@ -141,12 +141,12 @@ const ballGeo = new THREE.SphereGeometry(0.5, 32, 32);
 const ball = new THREE.Mesh(ballGeo, ballMat);
 scene.add(ball);
 
-let n = 0.03;
+let n = window.innerWidth / (1000 * 10);
 
 const animate = () => {
-	handleMovement(leftMovement, leftCube);
-	handleMovement(rightMovement, rightCube);
-	ball.translateX(n);
+	handleMovement(leftMovement, leftCube, Math.abs(n * 1.5));
+	handleMovement(rightMovement, rightCube, Math.abs(n * 1.5));
+	ball.translateX(n * 1.5);
 	if (ball.position.x >= 5 || ball.position.x <= -5) n = -n;
 
 	renderer.render(scene, camera);
