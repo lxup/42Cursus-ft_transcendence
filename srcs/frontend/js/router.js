@@ -51,7 +51,10 @@ const urlLocationHandler = async () => {
 	document.getElementById("content").innerHTML = html;
 
 	if (location == "/signup") {
-		handleFormSubmission();
+		handleSignUp();
+	}
+	if (location == "/login") {
+		handleLogin();
 	}
 };
 
@@ -60,7 +63,7 @@ window.route = route;
 
 urlLocationHandler();
 
-const handleFormSubmission = () => {
+const handleSignUp = () => {
 	const signUpForm = document.getElementById("signup-form");
 
 	signUpForm.addEventListener("submit", async (event) => {
@@ -75,8 +78,6 @@ const handleFormSubmission = () => {
 			email,
 			password,
 		};
-
-		console.log(data);
 
 		try {
 			const resp = await fetch("/api/auth/register/", {
@@ -94,6 +95,44 @@ const handleFormSubmission = () => {
 			} else {
 				alert("Signup failed: ", result);
 				console.log("fail signup: ", result);
+			}
+		} catch (error) {
+			console.log("Network error:", error);
+			alert("oops! network error occured, try again later..");
+		}
+	});
+};
+
+const handleLogin = () => {
+	const loginForm = document.getElementById("login-form");
+
+	loginForm.addEventListener("submit", async (event) => {
+		event.preventDefault();
+
+		const email = document.getElementById("email").value;
+		const password = document.getElementById("password").value;
+
+		const data = {
+			email,
+			password,
+		};
+
+		try {
+			const resp = await fetch("/api/auth/login/", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(data),
+			});
+
+			const result = await resp.json();
+			if (resp.ok) {
+				console.log("success login: ", result);
+				alert("login successful: ", result);
+			} else {
+				alert("login failed: ", result);
+				console.log("fail login: ", result);
 			}
 		} catch (error) {
 			console.log("Network error:", error);
