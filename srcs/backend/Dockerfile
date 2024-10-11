@@ -13,5 +13,4 @@ ENV PYTHONUNBUFFERED 1
 
 EXPOSE 8000
 
-#change the "todo.wsgi.. to "projectname.wsgi.application"
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "transcendence.wsgi:application"]

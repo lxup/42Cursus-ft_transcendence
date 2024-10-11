@@ -77,5 +77,27 @@ const handleFormSubmission = () => {
 		};
 
 		console.log(data);
+
+		try {
+			const resp = await fetch("/api/auth/register/", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(data),
+			});
+
+			const result = await resp.json();
+			if (resp.ok) {
+				console.log("success signup: ", result);
+				alert("Signup successful: ", result);
+			} else {
+				alert("Signup failed: ", result);
+				console.log("fail signup: ", result);
+			}
+		} catch (error) {
+			console.log("Network error:", error);
+			alert("oops! network error occured, try again later..");
+		}
 	});
 };

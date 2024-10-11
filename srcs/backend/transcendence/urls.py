@@ -18,21 +18,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from authentication.views import (
-    RegisterView,
-    LoginView,
-    RefreshTokenView,
-    LogoutView,
     OAuth42LoginView,
     OAuth42CallbackView,
 )
 
+
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("o/", include("oauth2_provider.urls", namespace="oauth2_provider")),
-    path("api/auth/register/", RegisterView.as_view(), name="register"),
-    path("api/auth/login/", LoginView.as_view(), name="login"),
-    path("api/auth/token/refresh/", RefreshTokenView.as_view(), name="token_refresh"),
-    path("api/auth/logout/", LogoutView.as_view(), name="logout"),
+    path("api/o/", include("oauth2_provider.urls", namespace="oauth2_provider")),
+    path("api/auth/", include("authentication.urls")),  # Include authentication URLs
     path("api/oauth/42/", OAuth42LoginView.as_view(), name="oauth_42_login"),
     path(
         "api/oauth/42/callback/",

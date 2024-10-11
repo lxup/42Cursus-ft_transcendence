@@ -60,8 +60,10 @@ class RegisterView(APIView):
 
         user = User.objects.create_user(email=email, username=username, password=password)
 
-        user.publicuser.display_name = username
-        user.publicuser.save()
+        # TODO commented this since there seems to be issued with it as it's not getting saved in the DB
+        # user.publicuser.display_name = username
+        # user.publicuser.save()
+
         return Response({'message': 'User created successfully'}, status=status.HTTP_201_CREATED)
 
 

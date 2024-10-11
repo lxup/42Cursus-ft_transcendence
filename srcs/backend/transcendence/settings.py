@@ -52,7 +52,7 @@ OAUTH2_PROVIDER = {
     "SCOPES": {"read": "Read scope", "write": "Write scope"},
 }
 
-FRONTEND_URL = "http://localhost:3000"
+FRONTEND_URL = "http://localhost:8080"
 
 # 42 OAuth2 settings
 OAUTH2_42_CLIENT_ID = (
@@ -61,7 +61,7 @@ OAUTH2_42_CLIENT_ID = (
 OAUTH2_42_CLIENT_SECRET = (
     "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"
 )
-OAUTH2_42_REDIRECT_URI = "http://localhost:8000/api/oauth/42/callback/"
+OAUTH2_42_REDIRECT_URI = "http://localhost:8080/api/oauth/42/callback/"
 
 
 REST_FRAMEWORK = {
@@ -199,6 +199,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "static/"
+
+CSRF_TRUSTED_ORIGINS = ["http://localhost:8080", "http://localhost:8000"]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
