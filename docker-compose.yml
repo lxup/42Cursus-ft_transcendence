@@ -6,7 +6,9 @@ services:
       context: srcs/
       dockerfile: "nginx/Dockerfile"
     ports:
-      - "8080:80"
+      - "8080:8080"
+    depends_on:
+      - django
     restart: unless-stopped
 
   django:
@@ -15,9 +17,7 @@ services:
     build:
       context: srcs/backend
       dockerfile: "Dockerfile"
-    ports:
-      - "8000:8000"
-    # restart: unless-stopped
+    restart: unless-stopped
 
 networks:
   ftt:
