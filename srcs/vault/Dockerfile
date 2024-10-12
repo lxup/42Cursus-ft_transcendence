@@ -23,11 +23,8 @@ RUN wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor -o /usr/shar
 RUN mkdir -p /vault/logs \
 	&& mkdir -p /vault/data \
 	&& mkdir -p /vault/config \
-	# && mkdir -p /vault/tls \
+	&& mkdir -p /vault/tls \
 	&& chown -R ${NAME}:${NAME} /vault
-
-# Generate self-signed certificate
-# RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /vault/tls/vault.key -out /vault/tls/vault.crt -subj "/C=FR/ST=IDF/L=Paris/O=42/OU=42/CN=vault"
 
 # Expose volumes
 # VOLUME /vault/logs

@@ -1,13 +1,13 @@
 services:
-  django:
-    networks:
-      - ftt
-    build:
-      context: srcs/backend
-      dockerfile: "Dockerfile"
-    ports:
-      - "8000:8000"
-    restart: unless-stopped
+  # django:
+  #   networks:
+  #     - ftt
+  #   build:
+  #     context: srcs/backend
+  #     dockerfile: "Dockerfile"
+  #   ports:
+  #     - "8000:8000"
+  #   restart: unless-stopped
   
   vault:
     networks:
@@ -17,6 +17,11 @@ services:
       dockerfile: "Dockerfile"
     ports:
       - "8200:8200"
+    healthcheck:
+      test: ["CMD", "vault", "status"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
     restart: on-failure
 
 networks:
