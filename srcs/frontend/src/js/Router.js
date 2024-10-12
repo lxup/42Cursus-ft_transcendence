@@ -42,7 +42,57 @@ export class Router {
 	 * @returns {Route} - The matching route
 	 */
 	#findMatchingRoute(path) {
-		return this.#routes.find((route) => route.pathRegex.test(path));
+		const route = this.#routes.find((route) => route.pathRegex.test(path));
+		if (route) {
+			Router.#setParamsValues(route, path);
+		}
+		return route;
+	}
+
+	/**
+	 * @brief Set the values for the parameters
+	 * @param {Route} route - The route to set the values for
+	 * @param {String} path - The path to set the values for
+	 */
+	static #setParamsValues(route, path) {
+		if (!(route instanceof Route)) {
+			throw new TypeError("Route must be an instance of Route");
+		}
+		if (typeof path !== "string") {
+			throw new TypeError("Path must be a string");
+		}
+
+		const values = path.match(route.pathRegex);
+		if (values) {
+			values.shift();
+			route.params.forEach((param, index) => {
+				Router.#setParamValue(route, param.name, values[index]);
+			});
+		}
+	}
+
+	/**
+	 * @brief Set the value for a given parameter
+	 * @param {Route} route - The route to set the value for
+	 * @param {String} id - The id to set the value for
+	 * @param {String} value - The value to set
+	 * 
+	 */
+	static #setParamValue(route, id, value) {
+		if (!(route instanceof Route)) {
+			throw new TypeError("Route must be an instance of Route");
+		}
+		if (typeof id !== "string") {
+			throw new TypeError("Id must be a string");
+		}
+		if (typeof value !== "string") {
+			throw new TypeError("Value must be a string");
+		}
+
+		const param = route.params.find((param) => param.name === id);
+		if (param) {
+			param.value = value;
+		}
 	}
 
 	/**
@@ -51,7 +101,17 @@ export class Router {
 	 * @param {Route} route - The route to set the parameters for
 	 */
 	static #setParams(component, route) {
-		console.log(`Setting params for ${JSON.stringify(route.params)}`);
+		console.log(`Setting params for ${JSON.stringify(route)}`);
+		if (!(component instanceof HTMLElement)) {
+			throw new TypeError("Component must be an instance of HTMLElement");
+		}
+		if (!(route instanceof Route)) {
+			throw new TypeError("Route must be an instance of Route");
+		}
+
+		route.params.forEach((param) => {
+			component.setAttribute(param.name, param.value);
+		});
 	}
 
 
@@ -67,7 +127,6 @@ export class Router {
 		if (!(route instanceof Route)) {
 			throw new TypeError("Route must be an instance of Route");
 		}
-		console.log(`Loading route: ${route}`);
 		const component = document.createElement(route.component);
 		Router.#setParams(component, route);
 		this.#app.innerHTML = "";
@@ -147,6 +206,18 @@ export class Route {
 
 		this.path = path;
 		this.component = component;
+		/**
+		 * @type {Object[]}
+		 * @property {String} name - The name of the parameter
+		 * @property {String} value - The value of the parameter
+		 * @example
+		 * [
+		 * 	{
+		 * 		name: "id",
+		 * 		value: "1"
+		 * 	}
+		 * ]
+		 */
 		this.params = [];
 		this.pathRegex = null;
 
@@ -160,7 +231,12 @@ export class Route {
 	#parseParams() {
 		const match = this.path.match(/:\w+/g);
 		if (match) {
-			this.params = match.map((param) => param.slice(1));
+			this.params = match.map((param) => {
+				return {
+					name: param.substring(1),
+					value: null
+				};
+			});
 		}
 	}
 

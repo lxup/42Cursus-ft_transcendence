@@ -1,4 +1,5 @@
 import { Component } from "../../Component.js";
+import "./index.html";
 
 export class Home extends Component {
 	constructor() {

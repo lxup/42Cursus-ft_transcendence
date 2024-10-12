@@ -14,6 +14,7 @@ export class App {
 		window.router = this.#router;
 		document.title = "Transcendence";
 		this.#router.init();
+		// this.#router.push("/home/1");
 	}
 }
 
