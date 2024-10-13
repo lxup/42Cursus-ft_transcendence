@@ -12,6 +12,10 @@ export class Router {
 	 */
 	#routes = [];
 	/**
+	 * @type {Function[]}
+	 */
+	#middleware = [];
+	/**
 	 * @brief Constructor for the Router class
 	 * @param {Object} app - The app object
 	 * @param {Array} routes - The routes for the router
@@ -28,10 +32,28 @@ export class Router {
 		window.addEventListener("popstate", this.#handlePopState.bind(this));
 	}
 
+	/* ------------------------------- Middleware ------------------------------- */
+
+	/**
+	 * @brief Use a middleware
+	 * @param {Function} middleware - The middleware to use
+	 */
+	use(middleware) {
+		if (typeof middleware !== "function") {
+			throw new TypeError("Middleware must be a function");
+		}
+		this.#middleware.push(middleware);
+	}
+
 	/* -------------------------------- Handlers -------------------------------- */
 
 	#handlePopState(event) {
-		console.log(`Pop state: ${window.location.pathname}`);
+		const route = this.#findMatchingRoute(document.location.pathname);
+		if (!route) {
+			console.error("Route not found");
+			return;
+		}
+		this.#loadRoute(route);
 	}
 
 	/* ---------------------------------- Utils --------------------------------- */
@@ -46,7 +68,8 @@ export class Router {
 		if (route) {
 			Router.#setParamsValues(route, path);
 		}
-		return route;
+		// Return the route or the default route (empty path)
+		return route || this.#routes.find((route) => route.path === "");
 	}
 
 	/**

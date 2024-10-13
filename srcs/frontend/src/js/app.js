@@ -1,7 +1,8 @@
-import { Router, Route } from "./Router.js";
+import { Router, Route } from "./utils/Router.js";
 
 import "./pages/index.js";
 import "./components/index.js";
+import "./layout/index.js";
 
 export class App {
 	#app;
@@ -10,6 +11,8 @@ export class App {
 		this.#app = document.getElementById("app");
 		this.#router = new Router(this.#app, [
 			new Route("/", "home-page"),
+			new Route("/search", "search-page"),
+			new Route("", "not-found-page"),
 		]);
 		window.router = this.#router;
 		document.title = "Transcendence";
