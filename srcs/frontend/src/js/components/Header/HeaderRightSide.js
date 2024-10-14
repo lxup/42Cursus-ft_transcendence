@@ -3,7 +3,7 @@ import { Component } from "../../utils/Component.js";
 export class HeaderRightSide extends Component {
 	content() {
 		return (`
-			<p>@loup</p>
+			<button class="btn bg-white px-2" onclick="window.router.push('/login')">Se connecter</button>
 		`);
 	}
 }
